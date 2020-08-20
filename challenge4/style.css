@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+}
+
+h3 {
+  margin: 5px 0;
+}
+
+p {
+  border-top: 1px  solid;
+  border-bottom: 1px  solid;
+  border-color: gray;
+  display: block;
+  padding: 5px 0;
+  width: 100%;
+}
+
+button {
+  display: block;
+  margin: 5px;
+}
+
+.startBtn {
+  margin-top: 10px;
+}
