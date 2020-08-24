@@ -31,6 +31,72 @@ Array.prototype.shuffle = function() {
   return this;
 }
 
+class CreatButtons {
+
+ createAnswersBtn = number => {
+    for (let i = 0; i < questionAnswers[number].length; i++) {
+      const answerBtn = document.createElement('button');
+      answerBtn.type = 'button';
+      answerBtn.name = 'answerBtn';
+      answerBtn.innerHTML = questionAnswers[number][i];
+      answerBtn.onclick = clickBtn;
+      downContent.appendChild(answerBtn);
+    }
+  }
+
+ changeAnswersBtn = number => {
+    while (downContent.firstChild) {
+      downContent.removeChild(downContent.firstChild);
+    }
+    this.createAnswersBtn(number);
+  }
+
+ createReloadBtn = () => {
+    while (downContent.firstChild) {
+      downContent.removeChild(downContent.firstChild);
+    }
+    const reloadBtn = document.createElement('button');
+    reloadBtn.type = 'button';
+    reloadBtn.name = 'reloadBtn';
+    reloadBtn.innerText = 'ホームに戻る';
+    reloadBtn.onclick = () => {
+      document.location.reload()
+    };
+    downContent.appendChild(reloadBtn);
+  }
+
+}
+
+class CreateContents {
+
+  createCategory = () => {
+    const category = questionData.results[0].category;
+    const genre = document.createElement('h3');
+    const genreContent = document.createTextNode('[ジャンル] ' + category);
+    genre.appendChild(genreContent);
+    topContent.appendChild(genre);
+  }
+
+  createLevel = () => {
+    const difficulty = questionData.results[0].difficulty;
+    const level = document.createElement('h3');
+    const levelContent = document.createTextNode('[難易度] ' + difficulty);
+    level.appendChild(levelContent);
+    topContent.appendChild(level);
+  }
+
+  createQuestion = (number) => {
+    centerContent.removeChild(centerContent.firstElementChild);
+    const questionContent = document.createElement('p');
+    questionContent.innerHTML = questionData.results[number].question;
+    centerContent.appendChild(questionContent);
+  }
+
+}
+
+const buttons = new CreatButtons();
+const contents = new CreateContents();
+
 startBtn.addEventListener('click', () => {
   waitingPage();
   startBtn.remove();
@@ -77,46 +143,11 @@ const waitingPage = () => {
 
 const changeQuestionPage = () => {
   header.innerText = '問題1';
-  createCategory();
-  createLevel();
-  createQuestion(questionNumber - 1);
-  createAnswersBtn(questionNumber - 1);
+  contents.createCategory();
+  contents.createLevel();
+  contents.createQuestion(questionNumber - 1);
+  buttons.createAnswersBtn(questionNumber - 1);
 
-}
-
-const createCategory = () => {
-  const category = questionData.results[0].category;
-  const genre = document.createElement('h3');
-  const genreContent = document.createTextNode('[ジャンル] ' + category);
-  genre.appendChild(genreContent);
-  topContent.appendChild(genre);
-}
-
-const createLevel = () => {
-  const difficulty = questionData.results[0].difficulty;
-  const level = document.createElement('h3');
-  const levelContent = document.createTextNode('[難易度] ' + difficulty);
-  level.appendChild(levelContent);
-  topContent.appendChild(level);
-}
-
-const createQuestion = (number) => {
-  centerContent.removeChild(centerContent.firstElementChild);
-  const questionContent = document.createElement('p');
-  questionContent.innerHTML = questionData.results[number].question;
-  centerContent.appendChild(questionContent);
-}
-
-// numberにpuestionNumberを入れるときは-1をしてから入れる
-const createAnswersBtn = number => {
-  for (let i = 0; i < questionAnswers[number].length; i++) {
-    const answerBtn = document.createElement('button');
-    answerBtn.type = 'button';
-    answerBtn.name = 'answerBtn';
-    answerBtn.innerHTML = questionAnswers[number][i];
-    answerBtn.onclick = clickBtn;
-    downContent.appendChild(answerBtn);
-  }
 }
 
 const clickBtn = event => {
@@ -126,37 +157,16 @@ const clickBtn = event => {
     topContent.children[1].remove();
     topContent.children[1].remove();
     centerContent.firstElementChild.innerText = '再度チャレンジしたい場合は以下をクリック！！';
-    createReloadBtn();
+    buttons.createReloadBtn();
   } else {
     ++questionNumber;
     header.innerText = '問題' + questionNumber;
     topContent.children[1].innerText = '[ジャンル] ' + questionData.results[questionNumber - 1].category;
     topContent.children[2].innerText = '[難易度] ' + questionData.results[questionNumber - 1].difficulty;
-    createQuestion(questionNumber - 1);
-    changeAnswersBtn(questionNumber - 1);
+    contents.createQuestion(questionNumber - 1);
+    buttons.changeAnswersBtn(questionNumber - 1);
     if (correctAnswers[questionNumber - 2] === clickedAnswer) {
       corrects.push(1);
     }
   }
-}
-
-const changeAnswersBtn = number => {
-  while (downContent.firstChild) {
-    downContent.removeChild(downContent.firstChild);
-  }
-  createAnswersBtn(number);
-}
-
-const createReloadBtn = () => {
-  while (downContent.firstChild) {
-    downContent.removeChild(downContent.firstChild);
-  }
-  const reloadBtn = document.createElement('button');
-  reloadBtn.type = 'button';
-  reloadBtn.name = 'reloadBtn';
-  reloadBtn.innerText = 'ホームに戻る';
-  reloadBtn.onclick = () => {
-    document.location.reload()
-  };
-  downContent.appendChild(reloadBtn);
 }
