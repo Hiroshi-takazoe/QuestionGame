@@ -100,13 +100,13 @@ const contents = new CreateContents();
 startBtn.addEventListener('click', () => {
   waitingPage();
   startBtn.remove();
-  asynchronousFunc()
+  fetchQuizDataAsync()
     .then(fetchCorrectAnswers)
     .then(fetchAnswers)
     .then(changeQuestionPage);
 });
 
-const asynchronousFunc = () => {
+const fetchQuizDataAsync = () => {
   return new Promise((resolve, reject) => {
     fetch('https://opentdb.com/api.php?amount=10')
       .then(response => response.json())
